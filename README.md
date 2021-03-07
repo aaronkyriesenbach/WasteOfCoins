@@ -1,0 +1,1 @@
+See how much money people have wasted on your favorite Reddit posts!
