@@ -4,7 +4,10 @@
 $background-color: #282a36;
 $foreground-color: #6272a4;
 $secondary-color: #44475a;
+$green: #50fa7b;
+$purple: #bd93f9;
 $reddit-orange: #ff5700;
+$primary-font: 'Oswald';
 
 .navbar {
     background-color: $background-color;
@@ -13,10 +16,19 @@ $reddit-orange: #ff5700;
 .navbar-brand {
     font-family: 'Lobster';
     color: $foreground-color;
+
+    &:hover {
+        color: $purple !important;
+    }
+
+    &.logo {
+        width: 2em;
+        height: 2em;
+    }
 }
 
 .header-text {
-    font: 3em 'Oswald';
+    font: 4em $primary-font;
     color: $foreground-color;
 }
 
@@ -31,7 +43,7 @@ $reddit-orange: #ff5700;
     caret-color: transparent;
     font: 2em Helvetica;
     text-align: center;
-    color: $reddit-orange;
+    color: $green;
     background-color: $secondary-color;
     border: transparent;
     border-radius: 2rem;
@@ -46,6 +58,7 @@ $reddit-orange: #ff5700;
     }
 }
 
-.post-link-input::placeholder {
-    text-align: center;
+.results-text {
+    font: 2.5em $primary-font;
+    color: $foreground-color;
 }

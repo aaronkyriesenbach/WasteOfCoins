@@ -1,0 +1,12 @@
+@import url(https://fonts.googleapis.com/css?family=Oswald);
+@import '../styles';
+
+.award-list {
+    font: 2em 'Oswald';
+    color: $foreground-color;
+}
+
+.award-icon {
+    width: 2rem;
+    height: 2rem;
+}
