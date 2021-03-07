@@ -1,0 +1,51 @@
+@import url(https://fonts.googleapis.com/css?family=Lobster);
+@import url(https://fonts.googleapis.com/css?family=Oswald);
+
+$background-color: #282a36;
+$foreground-color: #6272a4;
+$secondary-color: #44475a;
+$reddit-orange: #ff5700;
+
+.navbar {
+    background-color: $background-color;
+}
+
+.navbar-brand {
+    font-family: 'Lobster';
+    color: $foreground-color;
+}
+
+.header-text {
+    font: 3em 'Oswald';
+    color: $foreground-color;
+}
+
+.reddit-text {
+    display: inline;
+    color: $reddit-orange;
+}
+
+.url-input {
+    width: 95%;
+    height: 4rem;
+    caret-color: transparent;
+    font: 2em Helvetica;
+    text-align: center;
+    color: $reddit-orange;
+    background-color: $secondary-color;
+    border: transparent;
+    border-radius: 2rem;
+    outline: none;
+
+    &:focus {
+        box-shadow: 0 0 0 2px $foreground-color;
+    }
+
+    &::placeholder {
+        color: $background-color;
+    }
+}
+
+.post-link-input::placeholder {
+    text-align: center;
+}
