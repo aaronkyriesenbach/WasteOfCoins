@@ -38,7 +38,7 @@ $primary-font: 'Oswald';
     height: 4rem;
 
     caret-color: transparent;
-    font-size: 1.3em;
+    font-size: 1em;
     font-family: $primary-font;
     text-align: center;
     padding: 0 1em 0.25em 1em;
@@ -61,11 +61,11 @@ $primary-font: 'Oswald';
 
 @media screen and (min-width: 320px) {
     .header-text {
-        font-size: calc(2em + 2em * ((100vw - 320px) / 680));
+        font-size: calc(2em + 2 * ((100vw - 320px) / 680));
     }
 
     .url-input {
-        font-size: calc(1.3em + 0.7em * ((100vw - 320px) / 680));
+        font-size: calc(1em + 1 * ((100vw - 320px) / 680));
     }
 }
 
