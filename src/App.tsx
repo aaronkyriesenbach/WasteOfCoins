@@ -72,7 +72,7 @@ export default class App extends React.Component<{}, State> {
           </a>
         </nav>
 
-        <div className='container-fluid d-flex flex-column align-items-center'>
+        <div className='container-fluid d-flex flex-column align-items-center text-center'>
           <header className='header-text'>How much money has <p className='reddit-text'>Reddit</p> spent on...</header>
           <PasteOnlyInput
             className={classnames('url-input m-2', { 'text-danger': error })}

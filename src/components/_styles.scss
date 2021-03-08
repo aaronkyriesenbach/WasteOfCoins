@@ -2,16 +2,47 @@
 @import '../styles';
 
 .award {
-    font: 1em $primary-font;
+    font: 0.75em $primary-font;
     color: $foreground-color;
 }
 
 .award-icon {
-    width: 2rem;
-    height: 2rem;
+    width: 1rem;
+    height: 1rem;
 }
 
 .results-text {
-    font: 2.5em $primary-font;
+    font-size: 1.5em;
+    font-family: $primary-font;
     color: $foreground-color;
+}
+
+@media screen and (min-width: 320px) {
+    .award {
+        font-size: calc(0.75em + 0.25em * ((100vw - 320px) / 680px));
+    }
+
+    .award-icon {
+        width: calc(1rem + 1rem * ((100vw - 320px) / 680px));
+        height: calc(1rem + 1rem * ((100vw - 320px) / 680px));
+    }
+
+    .results-text {
+        font-size: calc(1.5em + 1em * ((100vw - 320px) / 680px));
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .award {
+        font-size: 1em;
+    }
+
+    .award-icon {
+        width: 2rem;
+        height: 2rem;
+    }
+
+    .results-text {
+        font-size: 2.5em;
+    }
 }

@@ -28,13 +28,9 @@ $primary-font: 'Oswald';
 }
 
 .header-text {
-    font: 4em $primary-font;
+    font-family: $primary-font;
     color: $foreground-color;
-}
-
-.reddit-text {
-    display: inline;
-    color: $reddit-orange;
+    font-size: 2em;
 }
 
 .url-input {
@@ -42,11 +38,10 @@ $primary-font: 'Oswald';
     height: 4rem;
 
     caret-color: transparent;
-    font: 2em $primary-font;
+    font-size: 1.3em;
+    font-family: $primary-font;
     text-align: center;
-    padding-left: 0.5em;
-    padding-right: 0.5em;
-    padding-bottom: 0.25em;
+    padding: 0 1em 0.25em 1em;
     overflow: hidden;
 
     color: $green;
@@ -62,6 +57,31 @@ $primary-font: 'Oswald';
     &::placeholder {
         color: $background-color;
     }
+}
+
+@media screen and (min-width: 320px) {
+    .header-text {
+        font-size: calc(2em + 2em * ((100vw - 320px) / 680px));
+    }
+
+    .url-input {
+        font-size: calc(1.3em + 0.7em * ((100vw - 320px) / 680px));
+    }
+}
+
+@media screen and (min-width: 1000px) {
+    .header-text {
+        font-size: 4em;
+    }
+
+    .url-input {
+        font-size: 2em;
+    }
+}
+
+.reddit-text {
+    display: inline;
+    color: $reddit-orange;
 }
 
 .error {
