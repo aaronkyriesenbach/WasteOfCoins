@@ -19,16 +19,16 @@
 
 @media screen and (min-width: 320px) {
     .award {
-        font-size: calc(0.75em + 0.25em * ((100vw - 320px) / 680px));
+        font-size: calc(0.75em + 0.25em * ((100vw - 320px) / 680));
     }
 
     .award-icon {
-        width: calc(1rem + 1rem * ((100vw - 320px) / 680px));
-        height: calc(1rem + 1rem * ((100vw - 320px) / 680px));
+        width: calc(1rem + 1rem * ((100vw - 320px) / 680));
+        height: calc(1rem + 1rem * ((100vw - 320px) / 680));
     }
 
     .results-text {
-        font-size: calc(1.5em + 1em * ((100vw - 320px) / 680px));
+        font-size: calc(1.5em + 1em * ((100vw - 320px) / 680));
     }
 }
 

@@ -61,11 +61,11 @@ $primary-font: 'Oswald';
 
 @media screen and (min-width: 320px) {
     .header-text {
-        font-size: calc(2em + 2em * ((100vw - 320px) / 680px));
+        font-size: calc(2em + 2em * ((100vw - 320px) / 680));
     }
 
     .url-input {
-        font-size: calc(1.3em + 0.7em * ((100vw - 320px) / 680px));
+        font-size: calc(1.3em + 0.7em * ((100vw - 320px) / 680));
     }
 }
 
