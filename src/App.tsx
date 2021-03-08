@@ -20,9 +20,10 @@ export default class App extends React.Component<{}, State> {
   }
 
   componentDidUpdate() {
+    const { validateUrl } = this;
     const { url, post, error } = this.state || {};
 
-    if (post && !url.includes(post.id)) {
+    if (post && (validateUrl(url) !== undefined || !url.includes(post.id))) {
       this.setState({ post: undefined });
     }
 
