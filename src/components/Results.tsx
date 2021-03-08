@@ -63,7 +63,7 @@ export default class Results extends React.Component<Props, {}> {
                         A value of <p className='reddit-text'>{getTotalCoins()} coins</p>...
                     </div>
                     <div>
-                        And is worth a grand total of <p className='reddit-text'>{getTotalValue()}</p>!
+                        And costs a grand total of <p className='reddit-text'>{getTotalValue()}</p>!
                     </div>
                 </div>
             );
