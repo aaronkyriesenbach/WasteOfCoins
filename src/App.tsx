@@ -47,7 +47,11 @@ export default class App extends React.Component<{}, State> {
       return ERROR_MESSAGE;
     }
 
-    const reducedUrl = url.match(POST_URL_REGEX)![0];
+    const match = url.match(POST_URL_REGEX)!;
+    let reducedUrl = match[0];
+    if (!match[2]) {
+      reducedUrl = `${match[1]}www.${match[3]}`
+    }
 
     if (url && url !== reducedUrl) {
       this.setState({ url: reducedUrl });
