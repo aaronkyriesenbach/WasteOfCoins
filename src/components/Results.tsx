@@ -1,6 +1,7 @@
 import LocaleCurrency from 'locale-currency';
 import React from 'react';
 import { Award } from '../api/Award';
+import CurrencyApi from '../api/CurrencyApi';
 import { Post } from '../api/Post';
 import { COINS_PER_DOLLAR } from '../constants';
 import './_styles.scss';
@@ -16,17 +17,21 @@ export default class Results extends React.Component<Props, {}> {
     getTotalCoins = () => {
         const { post } = this.props;
 
-        return post.allAwardings.reduce((acc, curr) => acc += curr.count * curr.coinPrice, 0);
+        return post.allAwardings
+            .reduce((acc, curr) => acc += curr.count * curr.coinPrice, 0);
     };
 
     getTotalValue = () => {
         const { getTotalCoins } = this;
-        const valueInUSD = getTotalCoins() / COINS_PER_DOLLAR;
+        const { currencyApi } = this.props;
 
         const lang = navigator.languages !== undefined ? navigator.languages[0] : navigator.language ?? 'en-US';
         const currency = LocaleCurrency.getCurrency(lang) ?? 'USD';
 
-        return Intl.NumberFormat(lang, { style: 'currency', currency: currency }).format(valueInUSD);
+        const valueInUSD = getTotalCoins() / COINS_PER_DOLLAR;
+        const convertedValue = currencyApi.convert(valueInUSD, 'USD', currency);
+
+        return Intl.NumberFormat(lang, { style: 'currency', currency: currency }).format(convertedValue);
     };
 
     render() {
@@ -67,5 +72,6 @@ export default class Results extends React.Component<Props, {}> {
 }
 
 type Props = {
+    currencyApi: CurrencyApi,
     post: Post;
 };

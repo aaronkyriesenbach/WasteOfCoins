@@ -1,10 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import classnames from 'classnames';
 import React from 'react';
+import CurrencyApi from './api/CurrencyApi';
 import { mapPost } from './api/Mappers';
 import { Post } from './api/Post';
 import RedditApi from './api/RedditApi';
-import coins from './assets/coins.png';
 import PasteOnlyInput from './components/PasteOnlyInput';
 import Results from './components/Results';
 import { ERROR_MESSAGE, POST_URL_REGEX } from './constants';
@@ -15,6 +15,7 @@ export default class App extends React.Component<{}, State> {
     super(props);
     this.state = {
       redditApi: new RedditApi(),
+      currencyApi: new CurrencyApi(),
       url: '',
     };
   }
@@ -27,7 +28,7 @@ export default class App extends React.Component<{}, State> {
       this.setState({ post: undefined });
     }
 
-    if (!error && !post) {
+    if (url && !error && !post) {
       const { redditApi } = this.state;
 
       redditApi.getPost(url)
@@ -62,13 +63,13 @@ export default class App extends React.Component<{}, State> {
 
   render() {
     const { updateUrl } = this;
-    const { url, post, error } = this.state || {};
+    const { url, post, error, currencyApi } = this.state || {};
 
     return (
       <div>
         <nav className='navbar'>
           <a className='navbar-brand' href='/'>
-            <img className='navbar-brand logo mr-2 pt-0' src={coins} alt='Reddit coins' />
+            <img className='navbar-brand logo mr-2 pt-0' src='coins.png' alt='Reddit coins' />
             Waste of Coins
           </a>
         </nav>
@@ -82,12 +83,12 @@ export default class App extends React.Component<{}, State> {
             onUpdate={updateUrl}
           />
           {error && url && <p className='error text-danger'>{error}</p>}
-          {post && <Results post={post} />}
+          {post && <Results currencyApi={currencyApi} post={post} />}
         </div>
 
-        <div className='m-1 bottom-text fixed-bottom d-flex justify-content-between'>
-          <a href='https://github.com/aaronkyriesenbach/waste-of-coins' target='_blank' rel='noreferrer'>github</a>
-          <a href='https://buymeacoffee.com/kyriesenbach' target='_blank' rel='noreferrer'>made with ❤️ by aaron ky-riesenbach</a>
+        <div className='bottom-text fixed-bottom d-flex justify-content-between'>
+          <a className='ml-1' href='https://github.com/aaronkyriesenbach/waste-of-coins' target='_blank' rel='noreferrer'>github</a>
+          <a className='mr-1' href='https://buymeacoffee.com/kyriesenbach' target='_blank' rel='noreferrer'>made with ❤️ by aaron ky-riesenbach</a>
         </div>
       </div>
     );
@@ -96,6 +97,7 @@ export default class App extends React.Component<{}, State> {
 
 type State = {
   redditApi: RedditApi,
+  currencyApi: CurrencyApi,
   url: string,
   post?: Post,
   error?: string;
