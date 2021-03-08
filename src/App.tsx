@@ -86,7 +86,7 @@ export default class App extends React.Component<{}, State> {
 
         <div className='m-1 bottom-text fixed-bottom d-flex justify-content-between'>
           <a href='https://github.com/aaronkyriesenbach/waste-of-coins' target='_blank' rel='noreferrer'>github</a>
-          <p className='mb-0'>made with ❤️ by aaron ky-riesenbach</p>
+          <a href='https://buymeacoffee.com/kyriesenbach' target='_blank' rel='noreferrer'>made with ❤️ by aaron ky-riesenbach</a>
         </div>
       </div>
     );
