@@ -44,7 +44,10 @@ $primary-font: 'Oswald';
     caret-color: transparent;
     font: 2em $primary-font;
     text-align: center;
+    padding-left: 0.5em;
+    padding-right: 0.5em;
     padding-bottom: 0.25em;
+    overflow: hidden;
 
     color: $green;
     background-color: $secondary-color;
@@ -65,7 +68,7 @@ $primary-font: 'Oswald';
     font: 1em $primary-font;
 }
 
-.results-text {
-    font: 2.5em $primary-font;
-    color: $foreground-color;
+.bottom-text, a {
+    font: 1em $primary-font;
+    color: $foreground-color !important;
 }

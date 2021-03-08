@@ -44,7 +44,7 @@ export default class Results extends React.Component<Props, {}> {
             return (
                 <div className='w-75 mb-4 d-flex flex-column align-items-center text-center results-text'>
                     <div>
-                        <p className='reddit-text'>{post.title}</p>{` has a total of ${getTotalAwards()} awards:`}
+                        <p className='reddit-text'>{post.title}</p>{` has ${getTotalAwards()} awards:`}
                     </div>
                     <div>
                         {post.allAwardings.map((award: Award) =>

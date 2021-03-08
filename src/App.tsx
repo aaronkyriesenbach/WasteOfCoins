@@ -83,6 +83,11 @@ export default class App extends React.Component<{}, State> {
           {error && url && <p className='error text-danger'>{error}</p>}
           {post && <Results post={post} />}
         </div>
+
+        <div className='m-1 bottom-text fixed-bottom d-flex justify-content-between'>
+          <a href='https://github.com/aaronkyriesenbach/waste-of-coins' target='_blank' rel='noreferrer'>github</a>
+          <p className='mb-0'>made with ❤️ by aaron ky-riesenbach</p>
+        </div>
       </div>
     );
   }
