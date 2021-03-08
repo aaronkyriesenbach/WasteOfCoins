@@ -40,16 +40,16 @@ export default class Results extends React.Component<Props, {}> {
 
         if (post.allAwardings.length === 0) {
             return (
-                <header className='w-75 mb-4 results-text text-danger text-center'>
+                <header className='results-container mb-4 results-text text-danger text-center'>
                     Oops, <p className='reddit-text'>{post.title}</p> doesn't have any awards!
                 </header>
             );
         }
         else {
             return (
-                <div className='w-75 mb-4 d-flex flex-column align-items-center text-center results-text'>
+                <div className='results-container mb-4 d-flex flex-column align-items-center text-center results-text'>
                     <div>
-                        <p className='reddit-text'>{post.title}</p>{` has ${getTotalAwards()} awards:`}
+                        <p className='reddit-text'>{post.title}</p> has {getTotalAwards()} award{getTotalAwards() > 1 && 's'}:
                     </div>
                     <div>
                         {post.allAwardings.map((award: Award) =>
@@ -63,7 +63,7 @@ export default class Results extends React.Component<Props, {}> {
                         A value of <p className='reddit-text'>{getTotalCoins()} coins</p>...
                     </div>
                     <div>
-                        And a grand total of <p className='reddit-text'>{getTotalValue()}</p>!
+                        And is worth a grand total of <p className='reddit-text'>{getTotalValue()}</p>!
                     </div>
                 </div>
             );

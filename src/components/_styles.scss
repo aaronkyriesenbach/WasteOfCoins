@@ -1,6 +1,10 @@
 @import url(https://fonts.googleapis.com/css?family=Oswald);
 @import '../styles';
 
+.results-container {
+    width: 90%;
+}
+
 .award {
     font: 0.75em $primary-font;
     color: $foreground-color;
