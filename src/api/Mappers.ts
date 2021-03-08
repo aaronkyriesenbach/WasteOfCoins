@@ -16,7 +16,7 @@ export const mapPost = (post: any): Post => {
     return {
         id: post.id,
         title: post.title,
-        subredditNamePrefixed: post.subredditNamePrefixed,
+        subredditNamePrefixed: post.subreddit_name_prefixed,
         allAwardings: post.all_awardings.map(mapAward)
     };
 };

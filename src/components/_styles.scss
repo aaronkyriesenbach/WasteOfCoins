@@ -1,8 +1,8 @@
 @import url(https://fonts.googleapis.com/css?family=Oswald);
 @import '../styles';
 
-.award-list {
-    font: 2em 'Oswald';
+.award {
+    font: 1em $primary-font;
     color: $foreground-color;
 }
 
