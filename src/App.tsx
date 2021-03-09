@@ -1,13 +1,14 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import classnames from 'classnames';
 import React from 'react';
+import { Comment } from './api/Comment';
 import CurrencyApi from './api/CurrencyApi';
-import { mapPost } from './api/Mappers';
+import { mapComment, mapPost } from './api/Mappers';
 import { Post } from './api/Post';
 import RedditApi from './api/RedditApi';
 import PasteOnlyInput from './components/PasteOnlyInput';
 import Results from './components/Results';
-import { ERROR_MESSAGE, POST_URL_REGEX } from './constants';
+import { COMMENT_URL_REGEX, ERROR_MESSAGE, POST_URL_REGEX } from './constants';
 import './_styles.scss';
 
 export default class App extends React.Component<{}, State> {
@@ -21,53 +22,59 @@ export default class App extends React.Component<{}, State> {
   }
 
   componentDidUpdate() {
-    const { validateUrl } = this;
-    const { url, post, error } = this.state || {};
+    const { url, post, error, comment } = this.state || {};
 
-    if (post && (validateUrl(url) !== undefined || !url.includes(post.id))) {
-      this.setState({ post: undefined });
-    }
-
-    if (url && !error && !post) {
+    if (url && !error && !post && !comment) {
       const { redditApi } = this.state;
 
-      redditApi.getPost(url)
+      redditApi.getUrl(url)
         .then(res => {
-          const unmappedPost = res.data[0].data.children[0].data;
-          const post = mapPost(unmappedPost);
+          if (COMMENT_URL_REGEX.test(url)) {
+            const unmappedComment = res.data[1].data.children[0].data;
+            const comment = mapComment(unmappedComment);
 
-          this.setState({ post: post });
+            this.setState({ comment: comment });
+          }
+          else {
+            const unmappedPost = res.data[0].data.children[0].data;
+            const post = mapPost(unmappedPost);
+
+            this.setState({ post: post });
+          }
         })
         .catch(() => this.setState({ error: ERROR_MESSAGE }));
     }
   }
 
+  reduceUrl = (url: string): string => {
+    const match = url.match(COMMENT_URL_REGEX) ?? url.match(POST_URL_REGEX)!;
+    let reducedUrl = match[0];
+
+    // Prepend www. to bare URLs and replace new. and m. with www. to avoid CORS errors
+    if (!match[2] || match[2] === 'new.' || match[2] === 'm.') {
+      reducedUrl = `${match[1]}www.${match[3]}`;
+    }
+
+    return reducedUrl;
+  };
+
   validateUrl = (url?: string): string | undefined => {
     if (!url || !POST_URL_REGEX.test(url)) {
       return ERROR_MESSAGE;
     }
-
-    const match = url.match(POST_URL_REGEX)!;
-    let reducedUrl = match[0];
-    if (!match[2]) {
-      reducedUrl = `${match[1]}www.${match[3]}`
-    }
-
-    if (url && url !== reducedUrl) {
-      this.setState({ url: reducedUrl });
-    }
   };
 
   updateUrl = (url: string): void => {
-    const { validateUrl } = this;
+    const { validateUrl, reduceUrl } = this;
+    const validation = validateUrl(url);
 
-    this.setState({ url: url });
-    this.setState({ error: validateUrl(url) });
+    // Clear loaded post/comment from state when a new URL is entered
+    this.setState({ url: validation ? url : reduceUrl(url), error: validation, post: undefined, comment: undefined });
   };
 
   render() {
     const { updateUrl } = this;
-    const { url, post, error, currencyApi } = this.state || {};
+    const { url, post, error, currencyApi, comment } = this.state || {};
 
     return (
       <div>
@@ -87,7 +94,8 @@ export default class App extends React.Component<{}, State> {
             onUpdate={updateUrl}
           />
           {error && url && <p className='error text-danger'>{error}</p>}
-          {post && <Results currencyApi={currencyApi} post={post} />}
+          {post && <Results currencyApi={currencyApi} value={post} />}
+          {comment && <Results currencyApi={currencyApi} value={comment} />}
         </div>
 
         <div className='bottom-text fixed-bottom d-flex justify-content-between'>
@@ -104,5 +112,6 @@ type State = {
   currencyApi: CurrencyApi,
   url: string,
   post?: Post,
+  comment?: Comment,
   error?: string;
 };

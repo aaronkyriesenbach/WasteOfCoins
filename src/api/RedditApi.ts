@@ -7,7 +7,7 @@ export default class RedditApi {
         this.api = axios.create();
     }
 
-    public getPost(url: string): AxiosPromise {
+    public getUrl(url: string): AxiosPromise {
         return this.api.get(`${url}.json`);
     }
 }
