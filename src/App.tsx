@@ -8,7 +8,11 @@ import { Post } from './api/Post';
 import RedditApi from './api/RedditApi';
 import PasteOnlyInput from './components/PasteOnlyInput';
 import Results from './components/Results';
-import { COMMENT_URL_REGEX, ERROR_MESSAGE, POST_URL_REGEX } from './constants';
+import {
+  BASE_COMMENT_PATH_REGEX, BASE_POST_PATH_REGEX, COMMENT_URL_REGEX,
+  ERROR_MESSAGE,
+  POST_URL_REGEX
+} from './constants';
 import './_styles.scss';
 
 export default class App extends React.Component<{}, State> {
@@ -21,8 +25,23 @@ export default class App extends React.Component<{}, State> {
     };
   }
 
+  componentDidMount() {
+    const { updateUrl } = this;
+    const path = window.location.pathname;
+
+    if (BASE_POST_PATH_REGEX.test(path) || BASE_COMMENT_PATH_REGEX.test(path)) {
+      updateUrl(window.location.protocol + '//reddit.com' + path);
+    }
+    else if (path !== '/') {
+      window.location.href = '/';
+    }
+  }
+
   componentDidUpdate() {
+    const { setPath } = this;
     const { url, post, error, comment } = this.state || {};
+
+    setPath();
 
     if (url && !error && !post && !comment) {
       const { redditApi } = this.state;
@@ -46,13 +65,26 @@ export default class App extends React.Component<{}, State> {
     }
   }
 
+  setPath = () => {
+    const { url, error } = this.state;
+
+    if (url && !error) {
+      const match = url.match(COMMENT_URL_REGEX) ?? url.match(POST_URL_REGEX)!;
+      const path = match[3];
+
+      if (!window.location.href.includes(path)) {
+        window.history.pushState(undefined, 'Waste of Coins', path);
+      }
+    }
+  };
+
   reduceUrl = (url: string): string => {
     const match = url.match(COMMENT_URL_REGEX) ?? url.match(POST_URL_REGEX)!;
     let reducedUrl = match[0];
 
     // Prepend www. to bare URLs and replace new. and m. with www. to avoid CORS errors
     if (!match[2] || match[2] === 'new.' || match[2] === 'm.') {
-      reducedUrl = `${match[1]}www.${match[3]}`;
+      reducedUrl = `${match[1]}www.reddit.com${match[3]}`;
     }
 
     return reducedUrl;
@@ -80,7 +112,7 @@ export default class App extends React.Component<{}, State> {
       <div>
         <nav className='navbar'>
           <a className='navbar-brand' href='/'>
-            <img className='navbar-brand logo mr-2 pt-0' src='coins.png' alt='Reddit coins' />
+            <img className='navbar-brand logo mr-2 pt-0' src='/coins.png' alt='Reddit coins' />
             Waste of Coins
           </a>
         </nav>
