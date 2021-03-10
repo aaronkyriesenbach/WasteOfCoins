@@ -28,16 +28,10 @@ export default class App extends React.Component<RouteComponentProps, State> {
   }
 
   componentDidMount() {
-    const { updateUrl } = this;
+    const { setUrlFromPath } = this;
     const { history } = this.props;
-    const path = window.location.pathname;
 
-    if (BASE_POST_PATH_REGEX.test(path) || BASE_COMMENT_PATH_REGEX.test(path)) {
-      updateUrl(window.location.protocol + '//www.reddit.com' + path);
-    }
-    else if (path !== '/') {
-      window.location.href = '/';
-    }
+    setUrlFromPath();
 
     history.listen(() => {
       if (history.action === 'POP') {
@@ -47,17 +41,11 @@ export default class App extends React.Component<RouteComponentProps, State> {
   }
 
   componentDidUpdate() {
-    const { setPath, updateUrl } = this;
+    const { setPathFromUrl, setUrlFromPath } = this;
     const { url, post, error, comment, wentBack } = this.state || {};
 
     if (wentBack) {
-      const path = window.location.pathname;
-
-      if (BASE_POST_PATH_REGEX.test(path) || BASE_COMMENT_PATH_REGEX.test(path)) {
-        const url = window.location.protocol + '//www.reddit.com' + path;
-
-        updateUrl(url);
-      }
+      setUrlFromPath();
       this.setState({ wentBack: false });
     }
     else if (url && !error && !post && !comment) {
@@ -78,12 +66,24 @@ export default class App extends React.Component<RouteComponentProps, State> {
             this.setState({ post: post });
           }
         })
-        .then(() => setPath())
+        .then(() => setPathFromUrl())
         .catch(() => this.setState({ error: ERROR_MESSAGE }));
     }
   }
 
-  setPath = () => {
+  setUrlFromPath = () => {
+    const { updateUrl } = this;
+    const path = window.location.pathname;
+
+    if (BASE_POST_PATH_REGEX.test(path) || BASE_COMMENT_PATH_REGEX.test(path)) {
+      updateUrl(window.location.protocol + '//www.reddit.com' + path);
+    }
+    else if (path !== '/') {
+      window.location.href = '/';
+    }
+  };
+
+  setPathFromUrl = () => {
     const { history, location } = this.props;
     const { url, error } = this.state;
 
