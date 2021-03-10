@@ -1,6 +1,7 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import classnames from 'classnames';
 import React from 'react';
+import { RouteComponentProps } from 'react-router-dom';
 import { Comment } from './api/Comment';
 import CurrencyApi from './api/CurrencyApi';
 import { mapComment, mapPost } from './api/Mappers';
@@ -15,35 +16,51 @@ import {
 } from './constants';
 import './_styles.scss';
 
-export default class App extends React.Component<{}, State> {
-  constructor(props: {}) {
+export default class App extends React.Component<RouteComponentProps, State> {
+  constructor(props: RouteComponentProps) {
     super(props);
     this.state = {
       redditApi: new RedditApi(),
       currencyApi: new CurrencyApi(),
       url: '',
+      wentBack: false
     };
   }
 
   componentDidMount() {
     const { updateUrl } = this;
+    const { history } = this.props;
     const path = window.location.pathname;
 
     if (BASE_POST_PATH_REGEX.test(path) || BASE_COMMENT_PATH_REGEX.test(path)) {
-      updateUrl(window.location.protocol + '//reddit.com' + path);
+      updateUrl(window.location.protocol + '//www.reddit.com' + path);
     }
     else if (path !== '/') {
       window.location.href = '/';
     }
+
+    history.listen(() => {
+      if (history.action === 'POP') {
+        this.setState({ url: '', post: undefined, comment: undefined, wentBack: true });
+      }
+    });
   }
 
   componentDidUpdate() {
-    const { setPath } = this;
-    const { url, post, error, comment } = this.state || {};
+    const { setPath, updateUrl } = this;
+    const { url, post, error, comment, wentBack } = this.state || {};
 
-    setPath();
+    if (wentBack) {
+      const path = window.location.pathname;
 
-    if (url && !error && !post && !comment) {
+      if (BASE_POST_PATH_REGEX.test(path) || BASE_COMMENT_PATH_REGEX.test(path)) {
+        const url = window.location.protocol + '//www.reddit.com' + path;
+
+        updateUrl(url);
+      }
+      this.setState({ wentBack: false });
+    }
+    else if (url && !error && !post && !comment) {
       const { redditApi } = this.state;
 
       redditApi.getUrl(url)
@@ -61,19 +78,22 @@ export default class App extends React.Component<{}, State> {
             this.setState({ post: post });
           }
         })
+        .then(() => setPath())
         .catch(() => this.setState({ error: ERROR_MESSAGE }));
     }
   }
 
   setPath = () => {
+    const { history, location } = this.props;
     const { url, error } = this.state;
 
     if (url && !error) {
       const match = url.match(COMMENT_URL_REGEX) ?? url.match(POST_URL_REGEX)!;
       const path = match[3];
 
-      if (!window.location.href.includes(path)) {
-        window.history.pushState(undefined, 'Waste of Coins', path);
+      if (!location.pathname.includes(path)) {
+        history.push(path);
+        this.setState({ wentBack: false });
       }
     }
   };
@@ -145,5 +165,6 @@ type State = {
   url: string,
   post?: Post,
   comment?: Comment,
-  error?: string;
+  error?: string,
+  wentBack: boolean;
 };
